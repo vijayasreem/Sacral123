@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Spring Boot 2 API - com.testing123.sacral123::CT1-107
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  Ct1107Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.testing123.sacral123.StreamLambdaHandler::handleRequest
+      Runtime: java11
+      CodeUri: .
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 30
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  Ct1107Api:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Export:
+      Name: Ct1107Api
